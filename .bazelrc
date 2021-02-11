@@ -1,0 +1,6 @@
+build --stamp
+build --workspace_status_command hack/workspace-status.sh
+
+build --platforms @build_bazel_rules_nodejs//toolchains/node:linux_amd64
+
+test --test_output=errors

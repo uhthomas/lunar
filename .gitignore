@@ -1,0 +1,4 @@
+/bazel-*
+user.bazelrc
+
+node_modules
