@@ -2,7 +2,10 @@ load("@yarn//@bazel/typescript:index.bzl", "ts_project")
 
 ts_project(
     name = "lib",
-    srcs = ["main.ts", "main_test.ts"],
+    srcs = [
+        "main.ts",
+        "main_test.ts",
+    ],
     tsconfig = "//:tsconfig",
     deps = [
         "@yarn//@types/koa",
@@ -12,7 +15,7 @@ ts_project(
     ],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary", "nodejs_test")
 
 nodejs_test(
     name = "src_test",
@@ -31,12 +34,23 @@ esbuild(
     deps = [":lib"],
 )
 
-load("@io_bazel_rules_docker//nodejs:image.bzl", "nodejs_image")
-
-nodejs_image(
-    name = "src",
+nodejs_binary(
+    name = "bin",
     data = [":bundle"],
     entry_point = "bundle.js",
+)
+
+load("@io_bazel_rules_docker//lang:image.bzl", "app_layer")
+
+app_layer(
+    name = "src",
+    base = "@io_gcr_distroless_nodejs//image",
+    binary = ":bin",
+    data = [":bundle"],
+    entrypoint = [
+        "/nodejs/bin/node",
+        "src/bundle.js",
+    ],
 )
 
 load("@io_bazel_rules_docker//docker:docker.bzl", "docker_push")
