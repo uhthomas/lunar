@@ -2,10 +2,7 @@ load("@yarn//@bazel/typescript:index.bzl", "ts_project")
 
 ts_project(
     name = "lib",
-    srcs = [
-        "main.ts",
-        "main_test.ts",
-    ],
+    srcs = ["main.ts"],
     tsconfig = "//:tsconfig",
     deps = [
         "@yarn//@types/koa",
@@ -15,11 +12,18 @@ ts_project(
     ],
 )
 
+ts_project(
+    name = "lib_test",
+    srcs = ["main_test.ts"],
+    tsconfig = "//:tsconfig",
+    deps = [":lib"],
+)
+
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 
 nodejs_test(
     name = "src_test",
-    data = [":lib"],
+    data = [":lib_test"],
     entry_point = "main_test.ts",
 )
 
