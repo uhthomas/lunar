@@ -14,6 +14,7 @@ ts_project(
 
 ts_project(
     name = "lib_test",
+    testonly = 1,
     srcs = ["main_test.ts"],
     tsconfig = "//:tsconfig",
     deps = [":lib"],

@@ -29,10 +29,6 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 
-load("@rules_python//python:pip.bzl", "pip_repositories")
-
-pip_repositories()
-
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
