@@ -18,17 +18,9 @@ def repositories():
         name = "com_github_bazelbuild_buildtools",
         sha256 = "a02ba93b96a8151b5d8d3466580f6c1f7e77212c4eb181cba53eb2cae7752a23",
         strip_prefix = "buildtools-3.5.0",
-        url = "https://github.com/bazelbuild/buildtools/archive/3.5.0.tar.gz",
+        urls = ["https://github.com/bazelbuild/buildtools/archive/3.5.0.tar.gz"],
     )
-    http_archive(
-        name = "esbuild_linux",
-        build_file_content = """exports_files(["bin/esbuild"])""",
-        sha256 = "d0358576fd541e15322a43ded13abab351ae42ccf2f3a00d6282451f02b32f23",
-        strip_prefix = "package",
-        urls = [
-            "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-0.8.45.tgz",
-        ],
-    )
+    esbuild_repositories()
     http_archive(
         name = "rules_proto",
         sha256 = "d8992e6eeec276d49f1d4e63cfa05bbed6d4a26cfe6ca63c972827a0d141ea3b",
@@ -53,4 +45,29 @@ def repositories():
             "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.25.1/rules_go-v0.25.1.tar.gz",
             "https://github.com/bazelbuild/rules_go/releases/download/v0.25.1/rules_go-v0.25.1.tar.gz",
         ],
+    )
+
+def esbuild_repositories():
+    _ESBUILD_VERSION = "0.8.45"
+    http_archive(
+        name = "esbuild_darwin",
+        build_file_content = """exports_files(["bin/esbuild"])""",
+        sha256 = "3bf980b5175df873dd84fd614d57722f3b1b9c7e74929504e26192d23075d5c3",
+        strip_prefix = "package",
+        urls = ["https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-%s.tgz" % _ESBUILD_VERSION],
+    )
+
+    http_archive(
+        name = "esbuild_windows",
+        build_file_content = """exports_files(["esbuild.exe"])""",
+        sha256 = "826cd58553e7b6910dd22aba001cd72af34e05c9c3e9af567b5b2a6b1c9f3941",
+        strip_prefix = "package",
+        urls = ["https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-%s.tgz" % _ESBUILD_VERSION],
+    )
+    http_archive(
+        name = "esbuild_linux",
+        build_file_content = """exports_files(["bin/esbuild"])""",
+        sha256 = "d0358576fd541e15322a43ded13abab351ae42ccf2f3a00d6282451f02b32f23",
+        strip_prefix = "package",
+        urls = ["https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-%s.tgz" % _ESBUILD_VERSION],
     )
