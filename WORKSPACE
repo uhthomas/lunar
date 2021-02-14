@@ -57,13 +57,6 @@ load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
 
 container_deps()
 
-load("@io_bazel_rules_docker//container:container.bzl", "container_pull")
+load("@io_bazel_rules_docker//nodejs:image.bzl", _nodejs_image_repos = "repositories")
 
-container_pull(
-    name = "io_gcr_distroless_nodejs",
-    digest = "sha256:fbe89e4caf51a8c2e4d4b0fb308e60e0f27e27597c3fc6564dc61dda85ef83ee",
-    registry = "gcr.io",
-    repository = "distroless/nodejs",
-    # tag is ignored, only for documentation
-    tag = "14",
-)
+_nodejs_image_repos()
